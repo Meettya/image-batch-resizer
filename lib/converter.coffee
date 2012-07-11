@@ -7,17 +7,18 @@ im        = require 'imagemagick'
 
 class Converter
 
-  constructor: (options) ->
-    @_new_size_         = "#{options.size}>" # do not upscale!
-    @_max_workers_      = options.workers
-    @_new_file_prefix_  = options.prefix
-    @_start_directory_  = options.directory
+  constructor: (options, config) ->
+    @_new_size_           = "#{options.size}>" # do not upscale!
+    @_max_workers_        = options.workers
+    @_new_file_prefix_    = options.prefix
+    @_start_directory_    = options.directory
 
-    @_exclude_file_list = ['.txt', '.db', '.DS_Store']
-    @_exclude_dir_list  = ['.AppleDouble', 'Temporary Items', 'Network Trash Folder']
+    @_exclude_file_list_  = config.exclude_file_list
+    @_exclude_dir_list_   = config.exclude_dir_list
 
-    @_im_command_       = '-adaptive-resize'
-    @_chain_            = null
+    @_im_command_         = config.im_command
+    
+    @_chain_              = null
 
   doConvert: ->
     # check to ensure is start directory ARE existing and its directory
@@ -53,11 +54,11 @@ class Converter
   Regex patterns to skip files
   ###
   _getExcludeFilesRegex: ->
-    escaped_filelist = @_exclude_file_list.map (element) -> element.replace /\./g, '\\.'
+    escaped_filelist = @_exclude_file_list_.map (element) -> element.replace /\./g, '\\.'
     RegExp "(?:#{escaped_filelist.join '|'})$", "i"
 
   _getExcludeDirsRegex: ->
-    escaped_dirlist = @_exclude_dir_list.map (element) -> 
+    escaped_dirlist = @_exclude_dir_list_.map (element) -> 
       element.replace /\./g, '\\.'
       element.replace /\s/g, '\\s'
     RegExp "/(?:#{escaped_dirlist.join '|'})/", "i"
@@ -110,15 +111,15 @@ class Converter
 
     [old_file_path, new_file_path] = @_filesPatchCompiller worker.name
 
-    console.log ">> #{old_file_path}".verbose
-
     # check if it always converted
     fs.exists new_file_path, (exists) =>
 
       # if prefixed file exists - just info it and finish worker
       if exists
-        console.log "== #{old_file_path}\n   #{new_file_path}".data
+        console.log "== #{old_file_path}".data
         return worker.finish()
+    
+      console.log ">> #{old_file_path}".verbose
 
       # or proceed converting
       im_options = ["#{old_file_path}", "#{@_im_command_}", "#{@_new_size_}", "#{new_file_path}"]

@@ -31,7 +31,7 @@ Void call show help information
 
     $ image-bath-resizer 
 
-    Image bath resizer v.0.5.1
+    Image bath resizer v.0.5.5
 
     Convert image files, recursing walking deeply from selected directory.
     Usage: image-bath-resizer -d [start directory]

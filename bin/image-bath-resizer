@@ -3,14 +3,15 @@
 path        = require 'path'
 fs          = require 'fs'
 
-root_path = path.join (path.dirname fs.realpathSync __filename), '..'
+root_path   = path.join (path.dirname fs.realpathSync __filename), '..'
 
 # enable some colors at output
-require('colors').setTheme path.join root_path, './etc', '/theme.js'
+require('colors').setTheme path.join root_path, './etc', '/theme'
 
 Converter   = require path.join root_path, './lib', '/converter'
 
 { version } = require path.join root_path, 'package.json'
+config      = require path.join root_path, './etc', '/config'
 
 # long definition for argv parser
 usage_string = 
@@ -33,21 +34,21 @@ argv  = require('optimist')
           .options('p',
             alias   : 'prefix'
             demand  : false
-            default : 'res_'
+            default : config.prefix
           )
           .describe('s', 'Size for image resizing')
           .options('s',
             alias   : 'size'
             demand  : false
-            default : '1920x1080'
+            default : config.size
           )          
           .describe('w', 'Workers number(parallel jobs)')
           .options('w',
             alias   : 'workers'
             demand  : false
-            default : 2
+            default : config.workers
           )       
           .argv
 
-my_converter = new Converter argv
+my_converter = new Converter argv, config
 my_converter.doConvert()
