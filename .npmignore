@@ -5,3 +5,4 @@ examples
 node_modules
 *.sock
 .DS_Store
+*.png
