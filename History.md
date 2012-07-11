@@ -1,3 +1,7 @@
+## 0.5.3 / 2012-07-11 07:40 PM
+
+  - Change 'findit' -> 'walkdir', because 'RangeError: Maximum call stack size exceeded' error on large directories.
+
 ## 0.5.1 / 2012-07-11 06:10 PM
 
   - Improve filtering exclude network boilerplate (as .AppleDouble and so on)

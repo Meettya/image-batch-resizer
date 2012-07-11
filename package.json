@@ -1,6 +1,6 @@
 {
     "name": "image-bath-resizer",
-    "version": "0.5.1",
+    "version": "0.5.3",
     "description": "CLI bath image resize converter",
     "keywords": [
         "resize",
@@ -10,7 +10,7 @@
     ],
     "author": "Dmitrii Karpich <meettya@gmail.com>",
     "dependencies": {
-        "findit": "latest",
+        "walkdir": "latest",
         "optimist": "latest",
         "colors": "git://github.com/Marak/colors.js.git#master",
         "chain-gang": "latest",

@@ -1,6 +1,6 @@
 fs        = require 'fs'
 path      = require 'path'
-findit    = require 'findit'
+walk      = require 'walkdir'
 chainGang = require 'chain-gang'
 im        = require 'imagemagick'
 
@@ -32,7 +32,8 @@ class Converter
       @_optimizeFinderCallbackRegex()
 
       # ignite async finder and setup event on file fined
-      finder = findit.find @_start_directory_
+      # now try walk
+      finder = walk @_start_directory_
       finder.on 'file', @_finderCallback
 
     this
