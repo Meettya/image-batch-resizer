@@ -14,6 +14,7 @@ class Converter
     @_start_directory_  = options.directory
 
     @_exclude_file_list = ['.txt', '.db', '.DS_Store']
+    @_exclude_dir_list  = ['.AppleDouble', 'Temporary Items', 'Network Trash Folder']
 
     @_im_command_       = '-adaptive-resize'
     @_chain_            = null
@@ -54,6 +55,12 @@ class Converter
     escaped_filelist = @_exclude_file_list.map (element) -> element.replace /\./g, '\\.'
     RegExp "(?:#{escaped_filelist.join '|'})$", "i"
 
+  _getExcludeDirsRegex: ->
+    escaped_dirlist = @_exclude_dir_list.map (element) -> 
+      element.replace /\./g, '\\.'
+      element.replace /\s/g, '\\s'
+    RegExp "/(?:#{escaped_dirlist.join '|'})/", "i"
+
   _getConvertedFilesRegex: ->
     RegExp "/#{@_new_file_prefix_}[^/]+$", 'i'
 
@@ -64,6 +71,7 @@ class Converter
   _optimizeFinderCallbackRegex: ->
     @_finderCallback.exclude_files_regex = @_getExcludeFilesRegex()
     @_finderCallback.converted_files_regex = @_getConvertedFilesRegex()
+    @_finderCallback.exclude_dirs_regex = @_getExcludeDirsRegex()
     null
 
   ###
@@ -71,6 +79,8 @@ class Converter
   ###
   _finderCallback : (file, stat) =>
     self = @_finderCallback 
+    # ignore files placed in wrong dirs
+    return null if file.match self.exclude_dirs_regex
     # ignore non-images files
     return null if file.match self.exclude_files_regex
     # skip converted files
