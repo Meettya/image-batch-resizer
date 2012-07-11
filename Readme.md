@@ -29,9 +29,9 @@ or find your way
 
 Void call show help information
 
-    $ ./bin/image-bath-resizer 
+    $ image-bath-resizer 
 
-    Image bath resizer v.0.4.7
+    Image bath resizer v.0.4.9
 
     Convert image files, recursing walking deeply from selected directory.
     Usage: image-bath-resizer -d [start directory]
