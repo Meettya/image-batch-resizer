@@ -1,0 +1,53 @@
+#!/usr/bin/env coffee
+
+path        = require 'path'
+fs          = require 'fs'
+
+root_path = path.join (path.dirname fs.realpathSync __filename), '..'
+
+# enable some colors at output
+require('colors').setTheme path.join root_path, './etc', '/theme.js'
+
+Converter   = require path.join root_path, './lib', '/converter'
+
+{ version } = require path.join root_path, 'package.json'
+
+# long definition for argv parser
+usage_string = 
+  """
+
+  Image bath resizer v.#{version}
+
+  Convert image files, recursing walking deeply from selected directory.
+  Usage: image-bath-resizer -d [start directory]
+  """
+
+argv  = require('optimist')
+          .usage(usage_string.help)
+          .describe('d', 'Directory to start recursing walking')
+          .options('d',
+            alias   : ['dir', 'directory']
+            demand  : true
+          )
+          .describe('p', 'Prefix for resized images')
+          .options('p',
+            alias   : 'prefix'
+            demand  : false
+            default : 'res_'
+          )
+          .describe('s', 'Size for image resizing')
+          .options('s',
+            alias   : 'size'
+            demand  : false
+            default : '1920x1080'
+          )          
+          .describe('w', 'Workers number(parallel jobs)')
+          .options('w',
+            alias   : 'workers'
+            demand  : false
+            default : 2
+          )       
+          .argv
+
+my_converter = new Converter argv
+my_converter.doConvert()

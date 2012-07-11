@@ -1,0 +1,24 @@
+{
+    "name": "image-bath-resizer",
+    "version": "0.4.7",
+    "description": "CLI bath image resize converter",
+    "keywords": [
+        "resize",
+        "CLI",
+        "imagemagick",
+        "bath"
+    ],
+    "author": "Dmitrii Karpich <meettya@gmail.com>",
+    "dependencies": {
+        "findit": "latest",
+        "optimist": "latest",
+        "colors": "git://github.com/Marak/colors.js.git#master",
+        "chain-gang": "latest",
+        "imagemagick": "latest"
+    },
+    "engines": {
+        "node": ">=0.6.0"
+    },
+    "bin" : { "image-bath-resizer" : "./bin/image-bath-resizer" },
+    "license": "MIT"
+}
