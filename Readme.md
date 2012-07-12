@@ -1,11 +1,10 @@
-
 # image-batch-resizer
 
 CLI script for asynchronous batch image resizing.
 
 ## Description:
 
-This script asynchronous convert image files, recursing walking deeply from selected directory.
+This script asynchronously resizes image files, recursively searching for images in selected directory.
 
 Use ImageMagick ``convert`` inside.
 
@@ -27,7 +26,7 @@ or find your way
 
 ![](http://github.com/Meettya/image-batch-resizer/raw/master/screenshot.png) 
 
-Void call show help information
+Calling without any arguments will show usage information
 
     $ image-batch-resizer 
 
