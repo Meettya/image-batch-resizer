@@ -6,7 +6,7 @@ CLI script for asynchronous batch image resizing.
 
 This script asynchronously resizes image files, recursively searching for images in selected directory.
 
-Use ImageMagick ``convert`` inside.
+It relies on ImageMagick's ``convert`` functionality.
 
 ## Install:
 
