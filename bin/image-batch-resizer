@@ -69,8 +69,8 @@ unless argv['remove-original-file'].match /^(yes|no)$/i
 if !!(argv['remove-original-file'].match /^yes$/i)
   console.log """
 
-              #{'WARNING!!!'.bold} You are select to #{'REMOVE ORIGINAL FILES'.bold}
-              If you are not SURE about deleting files - #{'stop script IMMEDEATLY'.bold}!!!
+              #{'WARNING!!!'.bold} You have selected to #{'REMOVE ORIGINAL FILES'.bold}
+              If you are not SURE about deleting these files - #{'stop script IMMEDIATELY'.bold}!!!
 
               """.warn
 
