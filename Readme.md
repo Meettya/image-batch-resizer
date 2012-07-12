@@ -19,7 +19,7 @@ For Mac OS X with installed ``brew``
 
     brew install imagemagick
     
-For any other distrubutions: Install ImageMagick according to your system's package management guidelines.
+For any other distrubution: Install ImageMagick according to your system's package management guidelines.
 
 ## Usage:
 
