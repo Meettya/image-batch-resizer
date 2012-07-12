@@ -18,10 +18,10 @@ config      = require path.join root_path, './etc', '/config'
 usage_string = 
   """
 
-  Image bath resizer v.#{version}
+  Image batch resizer v.#{version}
 
   Convert image files, recursing walking deeply from selected directory.
-  Usage: image-bath-resizer -d [start directory]
+  Usage: image-batch-resizer -d [start directory]
   """
 
 argv  = optimist

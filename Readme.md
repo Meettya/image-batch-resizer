@@ -1,7 +1,7 @@
 
-# image-bath-resizer
+# image-batch-resizer
 
-CLI script for asynchronous bath image resizing.
+CLI script for asynchronous batch image resizing.
 
 ## Description:
 
@@ -11,9 +11,9 @@ Use ImageMagick ``convert`` inside.
 
 ## Install:
 
-    npm install image-bath-resizer -g
+    npm install image-batch-resizer -g
 
-! Before usage ``image-bath-resizer`` you MUST install ImageMagick binary !
+! Before usage ``image-batch-resizer`` you MUST install ImageMagick binary !
 
 For Mac OS with installed ``brew`` 
 
@@ -23,18 +23,18 @@ or find your way
 
 ## Usage:
 
-    $ image-bath-resizer -d ./image_dir
+    $ image-batch-resizer -d ./image_dir
 
-![](http://github.com/Meettya/image-bath-resizer/raw/master/screenshot.png) 
+![](http://github.com/Meettya/image-batch-resizer/raw/master/screenshot.png) 
 
 Void call show help information
 
-    $ image-bath-resizer 
+    $ image-batch-resizer 
 
-    Image bath resizer v.0.5.9
+    Image batch resizer v.0.5.9
 
     Convert image files, recursing walking deeply from selected directory.
-    Usage: image-bath-resizer -d [start directory]
+    Usage: image-batch-resizer -d [start directory]
 
     Options:
       -d, --dir, --directory      Directory to start recursing walking             [required]

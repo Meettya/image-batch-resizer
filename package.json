@@ -1,12 +1,12 @@
 {
-    "name": "image-bath-resizer",
+    "name": "image-batch-resizer",
     "version": "0.5.9",
-    "description": "CLI bath image resize converter",
+    "description": "CLI batch image resize converter",
     "keywords": [
         "resize",
         "CLI",
         "imagemagick",
-        "bath"
+        "batch"
     ],
     "author": "Dmitrii Karpich <meettya@gmail.com>",
     "dependencies": {
@@ -21,8 +21,8 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/Meettya/image-bath-resizer.git"
+        "url": "https://github.com/Meettya/image-batch-resizer.git"
     },
-    "bin" : { "image-bath-resizer" : "./bin/image-bath-resizer" },
+    "bin" : { "image-batch-resizer" : "./bin/image-batch-resizer" },
     "license": "MIT"
 }
