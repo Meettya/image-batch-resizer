@@ -1,7 +1,7 @@
 {
     "name": "image-batch-resizer",
-    "version": "0.5.9",
-    "description": "CLI batch image resize converter",
+    "version": "0.6.1",
+    "description": "CLI batch image resizer",
     "keywords": [
         "resize",
         "CLI",

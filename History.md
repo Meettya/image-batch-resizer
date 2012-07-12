@@ -1,3 +1,8 @@
+## 0.6.1 / 2012-07-12 07:20 PM
+
+  - Fixed grammatical errors (thanks to portsnap)
+  - Refresh screen shot
+
 ## 0.5.9 / 2012-07-12 02:10 PM
 
   - Refactor code

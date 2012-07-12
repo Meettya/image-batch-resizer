@@ -43,5 +43,9 @@ Calling without any arguments will show usage information
       -s, --size                  New image size                                      [default: "1920x1080"]
       -w, --workers               Number of workers (parallel jobs)                   [default: "2"]
 
+## Thanks:
 
+Thanks to [portsnap](https://github.com/portsnap) for grammatical errors fix.
+
+Thanks to [soldair](https://github.com/soldair) for [node-walkdir](https://github.com/soldair/node-walkdir) - it really works on large directories.
 
