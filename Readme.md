@@ -33,15 +33,15 @@ Calling without any arguments will show usage information
 
     Image batch resizer v.0.5.9
 
-    Convert image files, recursing walking deeply from selected directory.
+    This script asynchronously resizes image files, recursively searching for images in selected directory.
     Usage: image-batch-resizer -d [start directory]
 
     Options:
-      -d, --dir, --directory      Directory to start recursing walking             [required]
-      -p, --prefix                Prefix for resized images                        [default: "res_"]
-      -R, --remove-original-file  Remove original file after convert ("yes"|"no")  [default: "no"]
-      -s, --size                  Size for image resizing                          [default: "1920x1080"]
-      -w, --workers               Workers number(parallel jobs)                    [default: "2"]
+      -d, --dir, --directory      Directory to start recursive search                 [required]
+      -p, --prefix                Prefix for resized images                           [default: "res_"]
+      -R, --remove-original-file  Remove original file after conversion ("yes"|"no")  [default: "no"]
+      -s, --size                  New image size                                      [default: "1920x1080"]
+      -w, --workers               Number of workers (parallel jobs)                   [default: "2"]
 
 
 
