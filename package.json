@@ -1,6 +1,6 @@
 {
     "name": "image-bath-resizer",
-    "version": "0.5.5",
+    "version": "0.5.7",
     "description": "CLI bath image resize converter",
     "keywords": [
         "resize",
