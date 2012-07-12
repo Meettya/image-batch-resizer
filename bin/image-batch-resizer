@@ -20,13 +20,13 @@ usage_string =
 
   Image batch resizer v.#{version}
 
-  Convert image files, recursing walking deeply from selected directory.
+  This script asynchronously resizes image files, recursively searching for images in selected directory.
   Usage: image-batch-resizer -d [start directory]
   """
 
 argv  = optimist
           .usage(usage_string.help)
-          .describe('d', 'Directory to start recursing walking')
+          .describe('d', 'Directory to start recursive search')
           .options('d',
             alias   : ['dir', 'directory']
             demand  : true
@@ -37,19 +37,19 @@ argv  = optimist
             demand  : false
             default : config.prefix
           )
-          .describe('R', 'Remove original file after convert ("yes"|"no")')
+          .describe('R', 'Remove original file after conversion ("yes"|"no")')
           .options('R',
             alias   : 'remove-original-file'
             demand  : false
             default : config.remove_original_file
           )
-          .describe('s', 'Size for image resizing')
+          .describe('s', 'New image size')
           .options('s',
             alias   : 'size'
             demand  : false
             default : config.size
           )          
-          .describe('w', 'Workers number(parallel jobs)')
+          .describe('w', 'Number of workers (parallel jobs)')
           .options('w',
             alias   : 'workers'
             demand  : false
