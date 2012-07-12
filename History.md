@@ -1,3 +1,8 @@
+## 0.5.9 / 2012-07-12 02:10 PM
+
+  - Refactor code
+  - Refresh screen shot
+
 ## 0.5.7 / 2012-07-12 01:10 PM
 
   - Add |--remove-original-file| key for one-way trip

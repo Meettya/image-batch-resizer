@@ -31,14 +31,17 @@ Void call show help information
 
     $ image-bath-resizer 
 
-    Image bath resizer v.0.5.5
+    Image bath resizer v.0.5.9
 
     Convert image files, recursing walking deeply from selected directory.
     Usage: image-bath-resizer -d [start directory]
 
     Options:
-      -d, --dir, --directory  Directory to start recursing walking  [required]
-      -p, --prefix            Prefix for resized images             [default: "res_"]
-      -s, --size              Size for image resizing               [default: "1920x1080"]
-      -w, --workers           Workers number(parallel jobs)         [default: 2]
+      -d, --dir, --directory      Directory to start recursing walking             [required]
+      -p, --prefix                Prefix for resized images                        [default: "res_"]
+      -R, --remove-original-file  Remove original file after convert ("yes"|"no")  [default: "no"]
+      -s, --size                  Size for image resizing                          [default: "1920x1080"]
+      -w, --workers               Workers number(parallel jobs)                    [default: "2"]
+
+
 

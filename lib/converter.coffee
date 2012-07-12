@@ -74,24 +74,26 @@ class Converter
   (functions IS object, so it CAN have a properties - simple!)
   ###
   _optimizeFinderCallbackRegex: ->
-    @_finderCallback.exclude_files_regex = @_getExcludeFilesRegex()
-    @_finderCallback.converted_files_regex = @_getConvertedFilesRegex()
-    @_finderCallback.exclude_dirs_regex = @_getExcludeDirsRegex()
+    they = @_finderCallback
+    they.exclude_files_regex = @_getExcludeFilesRegex()
+    they.converted_files_regex = @_getConvertedFilesRegex()
+    they.exclude_dirs_regex = @_getExcludeDirsRegex()
     null
 
   ###
   Callback for finder
   ###
   _finderCallback : (file, stat) =>
-    self = @_finderCallback 
+    itself = @_finderCallback 
     # ignore files placed in wrong dirs
-    return null if file.match self.exclude_dirs_regex
+    return null if file.match itself.exclude_dirs_regex
     # ignore non-images files
-    return null if file.match self.exclude_files_regex
+    return null if file.match itself.exclude_files_regex
     # skip converted files
-    return null if file.match self.converted_files_regex
+    return null if file.match itself.converted_files_regex
 
     @_chain_.add @_converterJob, file
+    null
 
 
   ###
@@ -121,10 +123,10 @@ class Converter
       if exists
         console.log "== #{old_file_path}".file_equal
         return worker.finish()
-    
-      console.log ">> #{old_file_path}".file_in
 
       # or proceed converting
+      console.log ">> #{old_file_path}".file_in
+
       im_options = ["#{old_file_path}", "#{@_im_command_}", "#{@_new_size_}", "#{new_file_path}"]
       im.convert im_options, (err, stdout, stderr) =>
         if err
@@ -135,17 +137,12 @@ class Converter
 
         # fork for delete original file if it needed
         if @_remove_original_file_
-          fs.unlink "#{old_file_path}", (err) ->
-            if err
-              console.error "\n#{old_file_path}\n#{err}".error
-              return worker.finish()
-
-            console.log "-- #{old_file_path}".file_delete
-            return worker.finish()
+          @_fileRemover old_file_path, worker
 
         else
           worker.finish()
-          
+    
+    null     
 
   ###
   Simply filepath compiler, its clean up old path and create new one
@@ -158,5 +155,20 @@ class Converter
     new_file_path = path.join filename_as_arr[0], @_new_file_prefix_ + filename_as_arr[1]
     
     [cleaned_old_file_path, new_file_path]
+
+  ###
+  Async file remover
+  ###
+  _fileRemover: (filename, worker) ->
+
+    fs.unlink "#{filename}", (err) ->
+      if err
+        console.error "\n#{filename}\n#{err}".error
+        return worker.finish()
+
+      console.log "-- #{filename}".file_delete
+      return worker.finish()
+
+    null
 
 module.exports = Converter
