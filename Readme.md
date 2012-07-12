@@ -12,13 +12,12 @@ It relies on ImageMagick's ``convert`` functionality.
 
     npm install image-batch-resizer -g
 
-! Before usage ``image-batch-resizer`` you MUST install ImageMagick binary !
+Before using ``image-batch-resizer`` you MUST install the ImageMagick suite and have the convert binary present!
+Install ImageMagick according to your system's guidelines, many distributions provide a package manager to do so.
 
-For Mac OS with installed ``brew`` 
+For Mac OS X with installed ``brew`` 
 
     brew install imagemagick
-
-or find your way
 
 ## Usage:
 
