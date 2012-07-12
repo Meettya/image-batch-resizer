@@ -5,6 +5,8 @@ Configuration settings
 module.exports =
 
 	im_command : "-adaptive-resize"
+
+	remove_original_file : "no"
 	
 	prefix : "res_"
 	size : "1920x1080"

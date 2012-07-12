@@ -8,17 +8,20 @@ im        = require 'imagemagick'
 class Converter
 
   constructor: (options, config) ->
-    @_new_size_           = "#{options.size}>" # do not upscale!
-    @_max_workers_        = options.workers
-    @_new_file_prefix_    = options.prefix
-    @_start_directory_    = options.directory
 
-    @_exclude_file_list_  = config.exclude_file_list
-    @_exclude_dir_list_   = config.exclude_dir_list
+    @_new_size_             = "#{options.size}>" # do not upscale!
+    @_max_workers_          = options.workers
+    @_new_file_prefix_      = options.prefix
+    @_start_directory_      = options.directory
 
-    @_im_command_         = config.im_command
-    
-    @_chain_              = null
+    @_remove_original_file_ = !!(options['remove-original-file'].match /^yes$/i)
+
+    @_exclude_file_list_    = config.exclude_file_list
+    @_exclude_dir_list_     = config.exclude_dir_list
+
+    @_im_command_           = config.im_command
+
+    @_chain_                = null
 
   doConvert: ->
     # check to ensure is start directory ARE existing and its directory
@@ -116,20 +119,33 @@ class Converter
 
       # if prefixed file exists - just info it and finish worker
       if exists
-        console.log "== #{old_file_path}".data
+        console.log "== #{old_file_path}".file_equal
         return worker.finish()
     
-      console.log ">> #{old_file_path}".verbose
+      console.log ">> #{old_file_path}".file_in
 
       # or proceed converting
       im_options = ["#{old_file_path}", "#{@_im_command_}", "#{@_new_size_}", "#{new_file_path}"]
-      im.convert im_options, (err, stdout, stderr) ->
+      im.convert im_options, (err, stdout, stderr) =>
         if err
           console.error "\n#{old_file_path}\n#{err}".error
           return worker.finish()
 
-        console.log "<< #{new_file_path}".out
-        worker.finish()
+        console.log "<< #{new_file_path}".file_out
+
+        # fork for delete original file if it needed
+        if @_remove_original_file_
+          fs.unlink "#{old_file_path}", (err) ->
+            if err
+              console.error "\n#{old_file_path}\n#{err}".error
+              return worker.finish()
+
+            console.log "-- #{old_file_path}".file_delete
+            return worker.finish()
+
+        else
+          worker.finish()
+          
 
   ###
   Simply filepath compiler, its clean up old path and create new one

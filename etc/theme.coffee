@@ -14,3 +14,8 @@ module.exports =
   out:      'yellow'
   debug:    'blue'
   error:    'red'
+
+  file_in:      'cyan'
+  file_out:     'yellow'
+  file_equal:   'grey'
+  file_delete:  'magenta'

@@ -2,6 +2,7 @@
 
 path        = require 'path'
 fs          = require 'fs'
+optimist    = require 'optimist'
 
 root_path   = path.join (path.dirname fs.realpathSync __filename), '..'
 
@@ -23,7 +24,7 @@ usage_string =
   Usage: image-bath-resizer -d [start directory]
   """
 
-argv  = require('optimist')
+argv  = optimist
           .usage(usage_string.help)
           .describe('d', 'Directory to start recursing walking')
           .options('d',
@@ -35,6 +36,12 @@ argv  = require('optimist')
             alias   : 'prefix'
             demand  : false
             default : config.prefix
+          )
+          .describe('R', 'Remove original file after convert ("yes"|"no")')
+          .options('R',
+            alias   : 'remove-original-file'
+            demand  : false
+            default : config.remove_original_file
           )
           .describe('s', 'Size for image resizing')
           .options('s',
@@ -49,6 +56,23 @@ argv  = require('optimist')
             default : config.workers
           )       
           .argv
+
+unless argv['remove-original-file'].match /^(yes|no)$/i
+  console.error """
+
+                ERRROR: --remove-original-file key is |#{argv['remove-original-file']}|
+                        this key MUST be 'yes' OR 'no' only!
+                """.error
+  optimist.showHelp()
+  process.exit 1
+
+if !!(argv['remove-original-file'].match /^yes$/i)
+  console.log """
+
+              #{'WARNING!!!'.bold} You are select to #{'REMOVE ORIGINAL FILES'.bold}
+              If you are not SURE about deleting files - #{'stop script IMMEDEATLY'.bold}!!!
+
+              """.warn
 
 my_converter = new Converter argv, config
 my_converter.doConvert()

@@ -1,3 +1,8 @@
+## 0.5.7 / 2012-07-12 01:10 PM
+
+  - Add |--remove-original-file| key for one-way trip
+  - Some small fix
+
 ## 0.5.5 / 2012-07-11 09:40 PM
 
   - Change logged info style to reduce verbose. 
