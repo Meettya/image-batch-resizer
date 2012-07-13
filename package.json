@@ -1,6 +1,6 @@
 {
     "name": "image-batch-resizer",
-    "version": "0.6.1",
+    "version": "0.6.3",
     "description": "CLI batch image resizer",
     "keywords": [
         "resize",
@@ -12,7 +12,7 @@
     "dependencies": {
         "walkdir": "latest",
         "optimist": "latest",
-        "colors": "git://github.com/Marak/colors.js.git#master",
+        "colors": "latest",
         "chain-gang": "latest",
         "imagemagick": "latest"
     },

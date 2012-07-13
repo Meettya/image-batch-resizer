@@ -1,3 +1,7 @@
+## 0.6.3 / 2012-07-13 05:30 PM
+
+  - Change 'colors' dependency from Git to registry.npmjs.org version
+
 ## 0.6.1 / 2012-07-12 07:20 PM
 
   - Fixed grammatical errors (thanks to portsnap)
