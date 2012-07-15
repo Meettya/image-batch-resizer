@@ -40,7 +40,7 @@ Calling without any arguments will show usage information
       -d, --dir, --directory      Directory to start recursive search                 [required]
       -p, --prefix                Prefix for resized images                           [default: "res_"]
       -R, --remove-original-file  Remove original file after conversion ("yes"|"no")  [default: "no"]
-      -s, --size                  New image size                                      [default: "1920x1080>"]
+      -s, --size                  New image size (add ">" to prevent upscale)         [default: "1920x1080>"]
       -w, --workers               Number of workers (parallel jobs)                   [default: "2"]
 
 ### Size property:
