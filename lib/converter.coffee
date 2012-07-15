@@ -68,11 +68,16 @@ class Converter
   ###
   Some black magic to avoid re-creations regex on each finder loop
   (functions IS object, so it CAN have a properties - simple!)
+  (and as other object it can be extended by |extends| - perfect!)
   ###
-  _optimizeRegex: (it) ->
-    it.exclude_files_regex = @_getExcludeFilesRegex()
-    it.converted_files_regex = @_getConvertedFilesRegex()
-    it.exclude_dirs_regex = @_getExcludeDirsRegex()
+  _regexToObjectAppender: (object) ->
+    new_properties_list = 
+      exclude_files_regex   : @_getExcludeFilesRegex()
+      converted_files_regex : @_getConvertedFilesRegex()
+      exclude_dirs_regex    : @_getExcludeDirsRegex()
+
+    # |extends| is good practice to add some more properties
+    object extends new_properties_list
     null
 
   ###
@@ -93,16 +98,16 @@ class Converter
 
     # some optimize work for regex
     unless itself.exclude_dirs_regex?
-      @_optimizeRegex itself
+      @_regexToObjectAppender itself
 
-    regex_patterns = [
-                itself.exclude_dirs_regex     # ignore files placed in wrong dirs
-                itself.exclude_files_regex    # ignore non-images files
-                itself.converted_files_regex  # skip converted files
+    properties_names = [
+                'exclude_dirs_regex'     # ignore files placed in wrong dirs
+                'exclude_files_regex'    # ignore non-images files
+                'converted_files_regex'  # skip converted files
       ]
 
-    for regex_pattern in regex_patterns
-      return false if file.match regex_pattern
+    for property in properties_names
+      return false if file.match itself[property]
 
     true
 

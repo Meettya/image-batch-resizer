@@ -1,4 +1,8 @@
-## 0.6.6 / 2012-07-15 05:20 PM
+## 0.6.7 / 2012-07-16 01:20 AM
+
+  - Some another readability refactoring
+
+## 0.6.5 / 2012-07-15 05:20 PM
 
   - Refactoring ugly places
   - Update Readme
