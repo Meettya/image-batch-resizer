@@ -31,7 +31,7 @@ Calling without any arguments will show usage information
 
     $ image-batch-resizer 
 
-    Image batch resizer v.0.5.9
+    Image batch resizer v.0.6.5
 
     This script asynchronously resizes image files, recursively searching for images in selected directory.
     Usage: image-batch-resizer -d [start directory]
@@ -40,8 +40,18 @@ Calling without any arguments will show usage information
       -d, --dir, --directory      Directory to start recursive search                 [required]
       -p, --prefix                Prefix for resized images                           [default: "res_"]
       -R, --remove-original-file  Remove original file after conversion ("yes"|"no")  [default: "no"]
-      -s, --size                  New image size                                      [default: "1920x1080"]
+      -s, --size                  New image size                                      [default: "1920x1080>"]
       -w, --workers               Number of workers (parallel jobs)                   [default: "2"]
+
+### Size property:
+
+Any valid ImageMagick geometry argument form may be used at "size" property (see ImageMagick [Image Geometry](http://www.imagemagick.org/script/command-line-processing.php#geometry)).
+
+In default settings used ">" postfix:
+
+  > `width`x`height>`  Shrinks images with dimension(s) larger than the corresponding `width` and/or `height` dimension(s).
+
+If you would change --size - don`t forget about right postfix! 
 
 ## Thanks:
 

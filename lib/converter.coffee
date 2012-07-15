@@ -9,7 +9,7 @@ class Converter
 
   constructor: (options, config) ->
 
-    @_new_size_             = "#{options.size}>" # do not upscale!
+    @_new_size_             = options.size
     @_max_workers_          = options.workers
     @_new_file_prefix_      = options.prefix
     @_start_directory_      = options.directory
@@ -21,24 +21,20 @@ class Converter
 
     @_im_command_           = config.im_command
 
-    @_chain_                = null
+    # chain object to direct workers
+    @_chain_                = @_createChain()
 
   doConvert: ->
-    # check to ensure is start directory ARE existing and its directory
+    # check to ensure is start "directory" ARE existing and its directory
     fs.lstat @_start_directory_, (err, stats) =>
 
-      @_lstatChecker err, stats
+      if (err_str = @_lstatChecker err, stats)
+        console.warn "#{err_str}".error
+        process.exit 1
 
-      # ok, we are have works, so - create chain object
-      @_chain_ = @_createChain()
-
-      # and some optimize work for regex
-      @_optimizeFinderCallbackRegex()
-
-      # ignite async finder and setup event on file fined
-      # now try walk
-      finder = walk @_start_directory_
-      finder.on 'file', @_finderCallback
+      # ignite async finder and setup event "on file fined"
+      walker = walk @_start_directory_
+      walker.on 'file', @_walkerCallback
 
     this
   
@@ -73,43 +69,53 @@ class Converter
   Some black magic to avoid re-creations regex on each finder loop
   (functions IS object, so it CAN have a properties - simple!)
   ###
-  _optimizeFinderCallbackRegex: ->
-    they = @_finderCallback
-    they.exclude_files_regex = @_getExcludeFilesRegex()
-    they.converted_files_regex = @_getConvertedFilesRegex()
-    they.exclude_dirs_regex = @_getExcludeDirsRegex()
+  _optimizeRegex: (it) ->
+    it.exclude_files_regex = @_getExcludeFilesRegex()
+    it.converted_files_regex = @_getConvertedFilesRegex()
+    it.exclude_dirs_regex = @_getExcludeDirsRegex()
     null
 
   ###
-  Callback for finder
+  Callback for finder will continue only on right files
   ###
-  _finderCallback : (file, stat) =>
-    itself = @_finderCallback 
-    # ignore files placed in wrong dirs
-    return null if file.match itself.exclude_dirs_regex
-    # ignore non-images files
-    return null if file.match itself.exclude_files_regex
-    # skip converted files
-    return null if file.match itself.converted_files_regex
-
-    @_chain_.add @_converterJob, file
+  _walkerCallback : (file, stat) =>
+    
+    if @_isFileShouldToBeConverted file
+      @_chain_.add @_converterJob, file
+    
     null
 
+  ###
+  File checker
+  ###
+  _isFileShouldToBeConverted : (file) ->
+    itself = @_isFileShouldToBeConverted
+
+    # some optimize work for regex
+    unless itself.exclude_dirs_regex?
+      @_optimizeRegex itself
+
+    regex_patterns = [
+                itself.exclude_dirs_regex     # ignore files placed in wrong dirs
+                itself.exclude_files_regex    # ignore non-images files
+                itself.converted_files_regex  # skip converted files
+      ]
+
+    for regex_pattern in regex_patterns
+      return false if file.match regex_pattern
+
+    true
 
   ###
   Checker for lstat returned data
-  exit process if 'directory' not exists or its not directory
   ###
   _lstatChecker : (err, stats) ->
     if err
-      console.warn "ERROR: not exists directory |#{@_start_directory_}|".error
-      process.exit 1
-
-    unless stats.isDirectory()
-      console.warn "ERROR: isn`t directory |#{@_start_directory_}|".error
-      process.exit 1 
-
-    null
+      "ERROR: not exists directory |#{@_start_directory_}|"
+    else if not stats.isDirectory()
+      "ERROR: isn`t directory |#{@_start_directory_}|"
+    else 
+      null
 
 
   _converterJob : (worker) =>

@@ -1,3 +1,9 @@
+## 0.6.6 / 2012-07-15 05:20 PM
+
+  - Refactoring ugly places
+  - Update Readme
+  - Replace ">" sign in "size" properties form hard-coded to config properties. See Readme about "size" properties
+
 ## 0.6.3 / 2012-07-13 05:30 PM
 
   - Change 'colors' dependency from Git to registry.npmjs.org version

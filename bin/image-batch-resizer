@@ -43,7 +43,7 @@ argv  = optimist
             demand  : false
             default : config.remove_original_file
           )
-          .describe('s', 'New image size')
+          .describe('s', 'New image size (add ">" to prevent upscale)')
           .options('s',
             alias   : 'size'
             demand  : false
