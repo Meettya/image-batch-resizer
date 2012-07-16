@@ -72,10 +72,11 @@ class Converter
   ###
   _regexToObjectAppender: (object) ->
     new_properties_list = 
-      exclude_files_regex   : @_getExcludeFilesRegex()
-      converted_files_regex : @_getConvertedFilesRegex()
-      exclude_dirs_regex    : @_getExcludeDirsRegex()
+      exclude_files_regex   : @_getExcludeFilesRegex()    # ignore files placed in wrong dirs
+      converted_files_regex : @_getConvertedFilesRegex()  # ignore non-images files
+      exclude_dirs_regex    : @_getExcludeDirsRegex()     # skip converted files
 
+    new_properties_list.regex_names = ( key for own key of new_properties_list )
     # |extends| is good practice to add some more properties
     object extends new_properties_list
     null
@@ -97,16 +98,10 @@ class Converter
     itself = @_isFileShouldToBeConverted
 
     # some optimize work for regex
-    unless itself.exclude_dirs_regex?
+    unless itself.regex_names?
       @_regexToObjectAppender itself
 
-    properties_names = [
-                'exclude_dirs_regex'     # ignore files placed in wrong dirs
-                'exclude_files_regex'    # ignore non-images files
-                'converted_files_regex'  # skip converted files
-      ]
-
-    for property in properties_names
+    for property in itself.regex_names
       return false if file.match itself[property]
 
     true
