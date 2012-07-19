@@ -59,3 +59,6 @@ Thanks to [portsnap](https://github.com/portsnap) for grammatical errors fix.
 
 Thanks to [soldair](https://github.com/soldair) for [node-walkdir](https://github.com/soldair/node-walkdir) - it really works on large directories.
 
+## Develop:
+
+Classes docs available at http://meettya.github.com/image-batch-resizer/docs/index.html
