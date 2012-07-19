@@ -33,8 +33,9 @@
       
       <div id="module-docstring">
         <h1>Converter module documentation</h1>
+<p>This library created to simplify image convert tasks
+</p>
 
-<p>This library created to simplify image convert tasks</p>
       </div>
       
       
@@ -47,7 +48,9 @@
             
           </div>
           <div class="class-content">
-            <p>This class resizes image files, recursively searching for images in selected directory.</p>
+            <p>This class resizes image files, recursively searching for images in selected directory.
+</p>
+
             <div class="methods">
               
               
@@ -56,9 +59,10 @@
                 
                 <div class="method">
                   <h4>constructor(options)</h4>
-                  <p>Options keys description (see ./bin/image-batch-resizer and ./etc/config for values examples)</p>
+                  <p>Options keys description (see ./bin/image-batch-resizer and ./etc/config for values examples)
 
-<pre><code>size                  <span class="comment"># New image size (add "&gt;" to prevent upscale)</span>
+</p>
+<pre><code>size                  <span class="comment"># New image size (add ">" to prevent upscale)</span>
 directory             <span class="comment"># Directory to start recursive search</span>
 remove-original-file  <span class="comment"># Remove original file after conversion ("yes"|"no")</span>
 workers               <span class="comment"># Number of workers (parallel jobs)</span>
@@ -66,48 +70,22 @@ prefix                <span class="comment"># Prefix for resized images</span>
 im_command            <span class="comment"># ImageMagick command</span>
 exclude_files :
   by_extension        <span class="comment"># Array of excluded files extension</span>
-  by_ name            <span class="comment"># Array of excluded files or directory names</span>
-</code></pre>
+  by_ name            <span class="comment"># Array of excluded files or directory names</span></code></pre>
+
                 </div>
                 
                 <div class="method">
                   <h4>doConvert()</h4>
-                  <p>Convert method.</p>
+                  <p>Convert method.
 
-<p>Return <code><span class="keyword">this</span></code> </p>
-                </div>
-                
-                <div class="method">
-                  <h4>_createFilter(options, config)</h4>
-                  
-                </div>
-                
-                <div class="method">
-                  <h4>_createChain(max_workers)</h4>
-                  
-                </div>
-                
-                <div class="method">
-                  <h4>_lstatChecker(err, stats)</h4>
-                  
-                </div>
-                
-                <div class="method">
-                  <h4>_walkerCallback(file, stat)</h4>
-                  
-                </div>
-                
-                <div class="method">
-                  <h4>_converterJob(worker)</h4>
-                  
-                </div>
-                
-                <div class="method">
-                  <h4>_fileRemover(filename, worker)</h4>
-                  
+</p>
+<p>Return <code>this</code> 
+</p>
+
                 </div>
                 
               </div>
+              
               
             </div>
           </div>
@@ -119,7 +97,9 @@ exclude_files :
             
           </div>
           <div class="class-content">
-            <p>Class created to remove non-specific behavior from Converter class</p>
+            <p>Class created to remove non-specific behavior from Converter class
+</p>
+
             <div class="methods">
               
               
@@ -129,16 +109,21 @@ exclude_files :
                 <div class="method">
                   <h4>constructor(@_new_file_prefix_)</h4>
                   <p>Option <code>new_file_prefix</code> {string}  </p>
+
                 </div>
                 
                 <div class="method">
                   <h4>makeCleanPair(filepath)</h4>
-                  <p>Method to create cleaned (remove unneeded dots e.t.c) name pairs</p>
+                  <p>Method to create cleaned (remove unneeded dots e.t.c) name pairs
 
-<p>Return array <code>[old_file_path, new_file_path]</code></p>
+</p>
+<p>Return array <code>[old_file_path, new_file_path]</code>
+</p>
+
                 </div>
                 
               </div>
+              
               
             </div>
           </div>
@@ -150,7 +135,9 @@ exclude_files :
             
           </div>
           <div class="class-content">
-            <p>Class to encapsulate filtration logic</p>
+            <p>Class to encapsulate filtration logic
+</p>
+
             <div class="methods">
               
               
@@ -159,44 +146,30 @@ exclude_files :
                 
                 <div class="method">
                   <h4>constructor(options)</h4>
-                  <p>Options keys description</p>
+                  <p>Options keys description
 
+</p>
 <pre><code>converted_prefix    <span class="comment"># skip converted files, detect by prefix</span>
 exclude_extension   <span class="comment"># ignore files, detect based on extension</span>
-exclude_names       <span class="comment"># ignore files or directory, detected by part of name</span>
-</code></pre>
+exclude_names       <span class="comment"># ignore files or directory, detected by part of name</span></code></pre>
+
                 </div>
                 
                 <div class="method">
                   <h4>isFilterPassed(file)</h4>
-                  <p>To filter file path.</p>
+                  <p>To filter file path.
 
-<p>All <strong>NON-matched</strong> by exclude patterns files will be pass this filter.</p>
+</p>
+<p>All <strong>NON-matched</strong> by exclude patterns files will be pass this filter.
 
-<p>Return boolean <code><span class="keyword">true</span></code> or <code><span class="keyword">false</span></code></p>
-                </div>
-                
-                <div class="method">
-                  <h4>_getExcludeFilesTypeRegex(extentions)</h4>
-                  
-                </div>
-                
-                <div class="method">
-                  <h4>_getExcludeNamesRegex(names)</h4>
-                  
-                </div>
-                
-                <div class="method">
-                  <h4>_getConvertedFilesRegex(file_prefix)</h4>
-                  
-                </div>
-                
-                <div class="method">
-                  <h4>_enumEscaper(in_array)</h4>
-                  
+</p>
+<p>Return boolean <code>true</code> or <code>false</code>
+</p>
+
                 </div>
                 
               </div>
+              
               
             </div>
           </div>
