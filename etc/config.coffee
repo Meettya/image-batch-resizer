@@ -12,14 +12,16 @@ module.exports =
   size          : "1920x1080>"
   workers       : "2"
 
-  exclude_file_list : [
-    ".txt"
-    ".db"
-    ".DS_Store"
-  ]
-
-  exclude_dir_list : [
-    ".AppleDouble"
-    "Temporary Items"
-    "Network Trash Folder"
-  ]
+  exclude_files : 
+    
+    by_extension : [
+        ".txt"
+        ".db"
+      ]
+    
+    by_name : [
+        ".DS_Store"
+        ".AppleDouble"
+        "Temporary Items"
+        "Network Trash Folder"
+      ]

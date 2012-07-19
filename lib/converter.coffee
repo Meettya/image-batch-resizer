@@ -1,3 +1,9 @@
+###
+# Converter module documentation #
+
+This library created to simplify image convert tasks
+###
+
 fs        = require 'fs'
 path      = require 'path'
 walk      = require 'walkdir'
@@ -6,25 +12,43 @@ im        = require 'imagemagick'
 
 
 class Converter
+  ###
+  This class resizes image files, recursively searching for images in selected directory.
+  ###
 
-  constructor: (options, config) ->
+  constructor: (options) ->
+    ###
+    Options keys description (see ./bin/image-batch-resizer and ./etc/config for values examples)
+
+        size                  # New image size (add ">" to prevent upscale)
+        directory             # Directory to start recursive search
+        remove-original-file  # Remove original file after conversion ("yes"|"no")
+        workers               # Number of workers (parallel jobs)
+        prefix                # Prefix for resized images
+        im_command            # ImageMagick command
+        exclude_files :
+          by_extension        # Array of excluded files extension
+          by_ name            # Array of excluded files or directory names
+    
+    ###
 
     @_new_size_             = options.size
-    @_max_workers_          = options.workers
-    @_new_file_prefix_      = options.prefix
     @_start_directory_      = options.directory
 
     @_remove_original_file_ = !!(options['remove-original-file'].match /^yes$/i)
 
-    @_exclude_file_list_    = config.exclude_file_list
-    @_exclude_dir_list_     = config.exclude_dir_list
+    @_im_command_           = options.im_command
 
-    @_im_command_           = config.im_command
-
-    # chain object to direct workers
-    @_chain_                = @_createChain()
+    @_chain_                = @_createChain options.workers
+    @_filter_               = @_createFilter options
+    @_path_composer_        = new PatchComposer options.prefix
 
   doConvert: ->
+    ### 
+    Convert method.
+
+    Return `this` 
+    ###
     # check to ensure is start "directory" ARE existing and its directory
     fs.lstat @_start_directory_, (err, stats) =>
 
@@ -44,67 +68,20 @@ class Converter
   ###
 
   ###
+  Create FileFilter object
+  options looks strange in constructor, so I move construction there
+  ###
+  _createFilter: (options, config) ->
+    new FileFilter
+          converted_prefix  : options.prefix
+          exclude_extension : options.exclude_files.by_extension
+          exclude_names     : options.exclude_files.by_name
+
+  ###
   Create chainGang object to rule workers
   ###
-  _createChain: ->
-    chainGang.create workers: @_max_workers_
-
-  ###
-  Regex patterns to skip files
-  ###
-  _getExcludeFilesRegex: ->
-    escaped_filelist = @_exclude_file_list_.map (element) -> element.replace /\./g, '\\.'
-    RegExp "(?:#{escaped_filelist.join '|'})$", "i"
-
-  _getExcludeDirsRegex: ->
-    escaped_dirlist = @_exclude_dir_list_.map (element) -> 
-      element.replace /\./g, '\\.'
-      element.replace /\s/g, '\\s'
-    RegExp "/(?:#{escaped_dirlist.join '|'})/", "i"
-
-  _getConvertedFilesRegex: ->
-    RegExp "/#{@_new_file_prefix_}[^/]+$", 'i'
-
-  ###
-  Some black magic to avoid re-creations regex on each finder loop
-  (functions IS object, so it CAN have a properties - simple!)
-  (and as other object it can be extended by |extends| - perfect!)
-  ###
-  _regexToObjectAppender: (object) ->
-    new_properties_list = 
-      exclude_files_regex   : @_getExcludeFilesRegex()    # ignore files placed in wrong dirs
-      converted_files_regex : @_getConvertedFilesRegex()  # ignore non-images files
-      exclude_dirs_regex    : @_getExcludeDirsRegex()     # skip converted files
-
-    new_properties_list.regex_names = ( key for own key of new_properties_list )
-    # |extends| is good practice to add some more properties
-    object extends new_properties_list
-    null
-
-  ###
-  Callback for finder will continue only on right files
-  ###
-  _walkerCallback : (file, stat) =>
-    
-    if @_isFileShouldToBeConverted file
-      @_chain_.add @_converterJob, file
-    
-    null
-
-  ###
-  File checker
-  ###
-  _isFileShouldToBeConverted : (file) ->
-    itself = @_isFileShouldToBeConverted
-
-    # some optimize work for regex
-    unless itself.regex_names?
-      @_regexToObjectAppender itself
-
-    for property in itself.regex_names
-      return false if file.match itself[property]
-
-    true
+  _createChain: (max_workers) ->
+    chainGang.create workers: max_workers
 
   ###
   Checker for lstat returned data
@@ -117,10 +94,19 @@ class Converter
     else 
       null
 
+  ###
+  Callback for finder will continue only on right files
+  ###
+  _walkerCallback : (file, stat) =>
+    
+    if @_filter_.isFilterPassed file
+      @_chain_.add @_converterJob, file
+    
+    null
 
   _converterJob : (worker) =>
 
-    [old_file_path, new_file_path] = @_filesPatchCompiller worker.name
+    [ old_file_path, new_file_path ] = @_path_composer_.makeCleanPair worker.name
 
     # check if it always converted
     fs.exists new_file_path, (exists) =>
@@ -148,19 +134,7 @@ class Converter
         else
           worker.finish()
     
-    null     
-
-  ###
-  Simply filepath compiler, its clean up old path and create new one
-  ###
-  _filesPatchCompiller: (filepath) ->
-        # create new name for file
-    filename_as_arr  = [ path.dirname(filepath), path.basename(filepath) ]
-
-    cleaned_old_file_path = path.join filename_as_arr[0], filename_as_arr[1]
-    new_file_path = path.join filename_as_arr[0], @_new_file_prefix_ + filename_as_arr[1]
-    
-    [cleaned_old_file_path, new_file_path]
+    null
 
   ###
   Async file remover
@@ -176,5 +150,88 @@ class Converter
       return worker.finish()
 
     null
+
+
+class PatchComposer
+  ###
+  Class created to remove non-specific behavior from Converter class
+  ###
+  constructor: (@_new_file_prefix_) ->
+    ### Option `new_file_prefix` {string}  ###
+
+  makeCleanPair: (filepath) ->
+    ###
+    Method to create cleaned (remove unneeded dots e.t.c) name pairs
+
+    Return array `[old_file_path, new_file_path]`
+    ###
+
+    filename_as_arr  = [ path.dirname(filepath), path.basename(filepath) ]
+
+    cleaned_old_file_path = path.join filename_as_arr[0], filename_as_arr[1]
+    new_file_path = path.join filename_as_arr[0], @_new_file_prefix_ + filename_as_arr[1]
+    
+    [cleaned_old_file_path, new_file_path]  
+
+
+class FileFilter
+  ###
+  Class to encapsulate filtration logic
+  ###
+
+  constructor: (options) ->
+    ###
+    Options keys description
+
+        converted_prefix    # skip converted files, detect by prefix
+        exclude_extension   # ignore files, detect based on extension
+        exclude_names       # ignore files or directory, detected by part of name
+
+    ###
+    @_regex_patterns_ =
+      converted_files_regex       : @_getConvertedFilesRegex options.converted_prefix
+      exclude_by_extension_regex  : @_getExcludeFilesTypeRegex options.exclude_extension   
+      exclude_by_name_regex       : @_getExcludeNamesRegex options.exclude_names  
+  
+  isFilterPassed: (file) ->
+    ###
+    To filter file path.
+    
+    All **NON-matched** by exclude patterns files will be pass this filter.
+
+    Return boolean `true` or `false`
+    ###
+    # some premature optimization - array will be created at first method call
+    itself = @isFilterPassed
+    unless itself.regex_names?
+      itself.regex_names = (pattern_name for own pattern_name of @_regex_patterns_)
+
+    for pattern in itself.regex_names
+      return false if file.match @_regex_patterns_[pattern]
+
+    true
+  
+  ###
+  Regex patterns to skip files
+  ###
+  _getExcludeFilesTypeRegex: (extentions) ->
+    escaped_extentions = @_enumEscaper extentions
+    RegExp "(?:#{escaped_extentions.join '|'})$", "i"
+
+  _getExcludeNamesRegex: (names) ->
+    escaped_names = @_enumEscaper names
+    RegExp "/(?:#{escaped_names.join '|'})", "i"
+
+  _getConvertedFilesRegex: (file_prefix) ->
+    RegExp "/#{file_prefix}[^/]+$", 'i'
+
+  ###
+  Prepare each array element (string) to be valid for Regex constructor
+  ###
+  _enumEscaper : (in_array) ->
+    in_array.map (element) ->
+      element
+        .replace /\\/g, '\\'
+
 
 module.exports = Converter

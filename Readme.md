@@ -31,7 +31,7 @@ Calling without any arguments will show usage information
 
     $ image-batch-resizer 
 
-    Image batch resizer v.0.6.5
+    Image batch resizer v.0.7.1
 
     This script asynchronously resizes image files, recursively searching for images in selected directory.
     Usage: image-batch-resizer -d [start directory]

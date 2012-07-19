@@ -74,5 +74,5 @@ if !!(argv['remove-original-file'].match /^yes$/i)
 
               """.warn
 
-my_converter = new Converter argv, config
+my_converter = new Converter (config extends argv)
 my_converter.doConvert()
