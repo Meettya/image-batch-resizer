@@ -1,78 +1,8 @@
 #!/usr/bin/env coffee
 
-path        = require 'path'
-fs          = require 'fs'
-optimist    = require 'optimist'
+path     = require 'path'
+fs       = require 'fs'
 
-root_path   = path.join (path.dirname fs.realpathSync __filename), '..'
+cli_path = path.join ( path.dirname fs.realpathSync __filename ), '..', '/lib', '/cli'
 
-# enable some colors at output
-require('colors').setTheme path.join root_path, './etc', '/theme'
-
-Converter   = require path.join root_path, './lib', '/converter'
-
-{ version } = require path.join root_path, 'package.json'
-config      = require path.join root_path, './etc', '/config'
-
-# long definition for argv parser
-usage_string = 
-  """
-
-  Image batch resizer v.#{version}
-
-  This script asynchronously resizes image files, recursively searching for images in selected directory.
-  Usage: image-batch-resizer -d [start directory]
-  """
-
-argv  = optimist
-          .usage(usage_string.help)
-          .describe('d', 'Directory to start recursive search')
-          .options('d',
-            alias   : ['dir', 'directory']
-            demand  : true
-          )
-          .describe('p', 'Prefix for resized images')
-          .options('p',
-            alias   : 'prefix'
-            demand  : false
-            default : config.prefix
-          )
-          .describe('R', 'Remove original file after conversion ("yes"|"no")')
-          .options('R',
-            alias   : 'remove-original-file'
-            demand  : false
-            default : config.remove_original_file
-          )
-          .describe('s', 'New image size (add ">" to prevent upscale)')
-          .options('s',
-            alias   : 'size'
-            demand  : false
-            default : config.size
-          )          
-          .describe('w', 'Number of workers (parallel jobs)')
-          .options('w',
-            alias   : 'workers'
-            demand  : false
-            default : config.workers
-          )       
-          .argv
-
-unless argv['remove-original-file'].match /^(yes|no)$/i
-  console.error """
-
-                ERRROR: --remove-original-file key is |#{argv['remove-original-file']}|
-                        this key MUST be 'yes' OR 'no' only!
-                """.error
-  optimist.showHelp()
-  process.exit 1
-
-if !!(argv['remove-original-file'].match /^yes$/i)
-  console.log """
-
-              #{'WARNING!!!'.bold} You have selected to #{'REMOVE ORIGINAL FILES'.bold}
-              If you are not SURE about deleting these files - #{'stop script IMMEDIATELY'.bold}!!!
-
-              """.warn
-
-my_converter = new Converter (config extends argv)
-my_converter.doConvert()
+require( cli_path ).run()

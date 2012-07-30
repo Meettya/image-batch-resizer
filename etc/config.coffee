@@ -9,8 +9,8 @@ module.exports =
   remove_original_file : "no"
   
   prefix        : "res_"
-  size          : "1920x1080>"
-  workers       : "2"
+  size          : "2048x2048>"  # to have proportional resize on any side
+  workers       : "auto"        # number or 'auto' - will be guessed
 
   exclude_files : 
     

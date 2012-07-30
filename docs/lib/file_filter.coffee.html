@@ -4,14 +4,14 @@
 
 <html>
 <head>
-  <title>CoffeeDoc | converter.coffee</title>
+  <title>CoffeeDoc | file_filter.coffee</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" media="all" href="../resources/base.css" />
 </head>
 <body>
   <header>
-    <h1>converter.coffee</h1>
+    <h1>file_filter.coffee</h1>
   </header>
   <div class="container">
     <div class="sidebar column">
@@ -19,7 +19,7 @@
       <h4>Classes</h4>
       <ul class="classlist">
         
-        <li><a href="#Converter">Converter</a></li>
+        <li><a href="#FileFilter">FileFilter</a></li>
         
       </ul>
       
@@ -28,8 +28,8 @@
     <div class="content column">
       
       <div id="module-docstring">
-        <h1>Converter module documentation</h1>
-<p>This library created to simplify image convert tasks
+        <h1>FileFilter module documentation</h1>
+<p>This library created to encapsulate some logic
 </p>
 
       </div>
@@ -40,11 +40,11 @@
         
         <div class="class">
           <div class="header">
-            <a id="Converter"><h3>Converter</h3></a>
+            <a id="FileFilter"><h3>FileFilter</h3></a>
             
           </div>
           <div class="class-content">
-            <p>This class resizes image files, recursively searching for images in selected directory.
+            <p>Class to encapsulate filtration logic
 </p>
 
             <div class="methods">
@@ -55,27 +55,24 @@
                 
                 <div class="method">
                   <h4>constructor(options)</h4>
-                  <p>Options keys description (see ./bin/image-batch-resizer and ./etc/config for values examples)
+                  <p>Options keys description
 
 </p>
-<pre><code>size                  <span class="comment"># New image size (add ">" to prevent upscale)</span>
-directory             <span class="comment"># Directory to start recursive search</span>
-remove-original-file  <span class="comment"># Remove original file after conversion ("yes"|"no")</span>
-workers               <span class="comment"># Number of workers (parallel jobs)</span>
-prefix                <span class="comment"># Prefix for resized images</span>
-im_command            <span class="comment"># ImageMagick command</span>
-exclude_files :
-  by_extension        <span class="comment"># Array of excluded files extension</span>
-  by_ name            <span class="comment"># Array of excluded files or directory names</span></code></pre>
+<pre><code>converted_prefix    <span class="comment"># skip converted files, detect by prefix</span>
+exclude_extension   <span class="comment"># ignore files, detect based on extension</span>
+exclude_names       <span class="comment"># ignore files or directory, detected by part of name</span></code></pre>
 
                 </div>
                 
                 <div class="method">
-                  <h4>doConvert()</h4>
-                  <p>Convert method.
+                  <h4>isFilterPassed(file)</h4>
+                  <p>To filter file path.
 
 </p>
-<p>Return <code>this</code> 
+<p>All <strong>NON-matched</strong> by exclude patterns files will be pass this filter.
+
+</p>
+<p>Return boolean <code>true</code> or <code>false</code>
 </p>
 
                 </div>
