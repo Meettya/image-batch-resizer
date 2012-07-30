@@ -41,8 +41,6 @@ class CLI
 
     options.workers = @::_calculateWorkers() if /^auto$/i.test options.workers
 
-    console.log "workers - #{options.workers}"
-
     if /^yes$/i.test options['remove-original-file']
       @::_printWarningOnRemove()
 

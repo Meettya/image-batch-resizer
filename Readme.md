@@ -41,7 +41,7 @@ Calling without any arguments will show usage information
       -p, --prefix                Prefix for resized images                           [default: "res_"]
       -R, --remove-original-file  Remove original file after conversion ("yes"|"no")  [default: "no"]
       -s, --size                  New image size (add ">" to prevent upscale)         [default: "1920x1080>"]
-      -w, --workers               Number of workers (parallel jobs)                   [default: "2"]
+      -w, --workers               Number of workers (parallel jobs)                   [default: "auto"]
 
 ### Size property:
 
@@ -61,4 +61,4 @@ Thanks to [soldair](https://github.com/soldair) for [node-walkdir](https://githu
 
 ## Develop:
 
-Classes docs available at http://meettya.github.com/image-batch-resizer/docs/index.html
+Classes docs available at /docs folder

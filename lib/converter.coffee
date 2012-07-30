@@ -43,7 +43,7 @@ class Converter
 
     @_im_command_           = options.im_command
 
-    @_chain_                = @_createChain options.workers
+    @_queue_                = @_createQueue options.workers
     @_filter_               = @_createFilter options
     @_path_composer_        = new PatchComposer options.prefix
 
@@ -82,9 +82,9 @@ class Converter
           exclude_names     : options.exclude_files.by_name
 
   ###
-  Create chainGang object to rule workers
+  Create async queue to limit converter workers
   ###
-  _createChain: (max_workers) ->
+  _createQueue: (max_workers) ->
     chainGang.create workers: max_workers
 
   ###
@@ -104,10 +104,13 @@ class Converter
   _walkerCallback : (file, stat) =>
     
     if @_filter_.isFilterPassed file
-      @_chain_.add @_converterJob, file
+      @_queue_.add @_converterJob, file
     
     null
 
+  ###
+  Command for async job 
+  ###
   _converterJob : (worker) =>
 
     [ old_file_path, new_file_path ] = @_path_composer_.makeCleanPair worker.name
@@ -115,16 +118,14 @@ class Converter
     # check if it always converted
     fs.exists new_file_path, (exists) =>
 
-      # if prefixed file exists - just info it and finish worker
       if exists
         console.log "== #{old_file_path}".file_equal
         return worker.finish()
-
-      # or proceed converting
+      
       console.log ">> #{old_file_path}".file_in
 
-      im_options = ["#{old_file_path}", "#{@_im_command_}", "#{@_new_size_}", "#{new_file_path}"]
-      im.convert im_options, (err, stdout, stderr) =>
+      im_args = [ old_file_path, @_im_command_, @_new_size_, new_file_path ]
+      im.convert im_args, (err, stdout, stderr) =>
         if err
           console.error "\n#{old_file_path}\n#{err}".error
           return worker.finish()
@@ -134,10 +135,9 @@ class Converter
         # fork for delete original file if it needed
         if @_remove_original_file_
           @_fileRemover old_file_path, worker
-
         else
           worker.finish()
-    
+      
     null
 
   ###
@@ -148,10 +148,10 @@ class Converter
     fs.unlink "#{filename}", (err) ->
       if err
         console.error "\n#{filename}\n#{err}".error
-        return worker.finish()
-
-      console.log "-- #{filename}".file_delete
-      return worker.finish()
+      else
+        console.log "-- #{filename}".file_delete
+      
+      worker.finish()
 
     null
 
