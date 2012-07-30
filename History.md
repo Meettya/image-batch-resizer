@@ -1,7 +1,8 @@
-## 0.0.7 / 2012-07-30 02:30 PM
+## 0.7.7 / 2012-07-30 02:30 PM
 
   - Replace html docs by GitHub Markdown wersion
-  - Refactor code 
+  - Refactor code
+  - Add 'auto' value to --workers key 
 
 ## 0.7.1 / 2012-07-19 12:30 PM
 
