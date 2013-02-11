@@ -21,7 +21,7 @@ class CLI
   This is cli worker
   ###
 
-  @run:() ->
+  @run: ->
     ###
     CLI entry point
 
@@ -113,16 +113,16 @@ class CLI
   ###
   Some magic variable, but it ok for now
   ###
-  _getConfig:() ->
+  _getConfig: ->
     require path.join root_path, './etc', '/config'
 
-  _getVersion:() ->
+  _getVersion: ->
     (require path.join root_path, 'package.json')['version']
 
   ###
   Warning label if --remove-original-file key setted to 'yes'
   ###
-  _printWarningOnRemove:() ->
+  _printWarningOnRemove: ->
     console.log """
 
             #{'WARNING!!!'.bold} You have selected to #{'REMOVE ORIGINAL FILES'.bold}
@@ -135,7 +135,7 @@ class CLI
   Naive CPU core counter.
   FIXME: if HT used - user get x2 workers but how detect real cores?
   ###
-  _calculateWorkers:() ->
+  _calculateWorkers: ->
     os.cpus().length
 
 module.exports = CLI
