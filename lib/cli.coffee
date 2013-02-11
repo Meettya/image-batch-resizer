@@ -14,7 +14,8 @@ root_path   = path.join (path.dirname fs.realpathSync __filename), '..'
 Converter   = require path.join root_path, './lib', '/converter'
 
 # enable some colors at output
-require('colors').setTheme path.join root_path, './etc', '/theme'
+theme = require path.join root_path, './etc', '/theme'
+require('colors').setTheme theme
 
 class CLI
   ###

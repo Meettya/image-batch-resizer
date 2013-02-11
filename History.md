@@ -1,3 +1,7 @@
+## 0.7.9 / 2013-02-12 12:50 AM
+
+  - Fix [issues #6](https://github.com/Meettya/image-batch-resizer/issues/6)
+
 ## 0.7.7 / 2012-07-30 02:30 PM
 
   - Replace html docs by GitHub Markdown wersion
