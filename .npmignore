@@ -1,5 +1,6 @@
 support
 test
+test_copy
 examples
 node_modules
 *.sock
