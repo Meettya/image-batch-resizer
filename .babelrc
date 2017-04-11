@@ -1,0 +1,3 @@
+{
+  "presets": ["babel-fast-presets/es2015-stage1"]
+}
