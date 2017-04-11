@@ -1,3 +1,9 @@
+## 0.8.1 / 2017-04-11 19:00 AM
+
+  - Rewrite all to ES6 with ES5 compile lib
+  - Remove class docs
+  - Change 'chain-gang' to 'queue'
+
 ## 0.7.9 / 2013-02-12 12:50 AM
 
   - Fix [issues #6](https://github.com/Meettya/image-batch-resizer/issues/6)
