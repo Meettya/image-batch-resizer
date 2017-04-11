@@ -1,8 +1,7 @@
-#!/usr/bin/env coffee
+#!/usr/bin/env node
 
-path     = require 'path'
-fs       = require 'fs'
+var path = require('path'),
+  fs = require('fs'),
+  cli_path = path.join((path.dirname(fs.realpathSync(__filename))), '..', '/lib', '/cli');
 
-cli_path = path.join ( path.dirname fs.realpathSync __filename ), '..', '/lib', '/cli'
-
-require( cli_path ).run()
+require(cli_path).run();
